@@ -1,3 +1,5 @@
+#! /usr/bin/python
+#coding: utf8 
 ###################################################################################
 # Copyright (c) 2012, Alasdair Morrison - www.alasdairmorrison.com
 # All rights reserved.
@@ -128,6 +130,8 @@ def convert(game):
         no_of_missing_functions=-1
         print 'exception.args = ', exception.args
         print 'exception = ', exception
+    try: os.remove("./ENIGMAsystem/SHELL/.eobjs/MacOSX/MacOSX/Compile/SHELLmain.d") #remove SHELLmain.d file which corrupts
+    except Exception, exception: print str(exception)
         
     os.chdir(startingDir) # change back to where we started
     return str1
@@ -238,7 +242,9 @@ def get_specific_errors(output):
     elif string.find(compiler_output,"error: integer constant is too large for ") !=-1:
         unknown_error=1
         error_category="integer constant is too large! (C17)"
-        #
+    elif string.find(compiler_output,"error: expected primary-expression before ‘,’") !=-1: #comma code?
+        unknown_error=1
+        error_category="Missing function/action parameter"
     else:
         unknown_error=1
         #print compiler_output[-1500:]

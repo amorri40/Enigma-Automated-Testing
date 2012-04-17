@@ -1,2 +1,4 @@
 examples
 *.pyc
+.DS_Store
+*(Autosaved).py

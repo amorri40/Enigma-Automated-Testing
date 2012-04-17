@@ -1,5 +1,5 @@
 #! /usr/bin/python
-
+#coding: utf8 
 ###################################################################################
 # Copyright (c) 2012, Alasdair Morrison - www.alasdairmorrison.com
 # All rights reserved.
@@ -112,9 +112,10 @@ def compile_mingw():
 now = datetime.datetime.now()
 g_platform=sys.platform
 #create the table for this revision if not already created
-db_table="64D_"+g_platform+"__"+calendar.month_abbr[now.month]+str(now.year)
+table_date=calendar.month_abbr[now.month]+"_"+str(now.day)+"_"+str(now.year)
+db_table="64D_"+g_platform+"__"+table_date
 ConvertingEnigma.createTable(c,db_table)
-if g_compileForWindows==True: g_windowsTable="64D_win32__"+calendar.month_abbr[now.month]+str(now.year); ConvertingEnigma.createTable(c,g_windowsTable)
+if g_compileForWindows==True: g_windowsTable="64D_win32__"+table_date; ConvertingEnigma.createTable(c,g_windowsTable)
 
 #start
 startingDir = os.getcwd()
@@ -202,5 +203,3 @@ for download_rows in range(0,maximum_number):
     
     print "overall elapsed ="+ str(time.time() - game_start_time)
 print "total elapsed ="+ str(time.time() - g_start)+" seconds"    
-            
-    
