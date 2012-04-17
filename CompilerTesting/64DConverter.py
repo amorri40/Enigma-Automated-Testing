@@ -125,6 +125,7 @@ r=db.store_result()
 for download_rows in range(0,maximum_number):
     game_start_time = time.time()
     row=r.fetch_row()
+    if len(row) <1: print "Finished Converting all examples!"; break
     url= row[0][3]
     id= row[0][0]
     name = row[0][1]
@@ -172,6 +173,7 @@ for download_rows in range(0,maximum_number):
 
         else:
             print "ERROR: Not a game maker file!"
+            continue
 
      except Exception, exception:
          print "ERROR: 64Digits probably down: " +str(exception)
@@ -183,6 +185,7 @@ for download_rows in range(0,maximum_number):
             #print "INFO: The game maker file "+gmfile
             output=ConvertingEnigma.convert(gmfile)
             ConvertingEnigma.get_specific_errors(output)
+    else: print "No game maker files in this example!"; continue
     converttime=(time.time() - game_start_time)
     htmlgamename = "<a href=\"http://64digits.com/games/"+sitelink+"\">"+name+"</a>"
     ConvertingEnigma.post_data_to_mysql(c,str(id),name,htmlgamename,db_table,str(converttime))
