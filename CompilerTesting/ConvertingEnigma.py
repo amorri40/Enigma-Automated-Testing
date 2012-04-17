@@ -34,6 +34,7 @@ __author__="alasdairmorrison"
 __date__ ="$Jul 3, 2011 5:49:07 AM$"
 
 import string, urllib2, EnigmaSettings
+from urllib2 import HTTPError
 
 # globals
 Unrecognized_function=0
