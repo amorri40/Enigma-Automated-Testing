@@ -205,4 +205,5 @@ for download_rows in range(0,maximum_number):
         
     
     print "overall elapsed ="+ str(time.time() - game_start_time)
-print "total elapsed ="+ str(time.time() - g_start)+" seconds"    
+print "total elapsed ="+ str(time.time() - g_start)+" seconds"  
+print "dlls:"+ConvertingEnigma.g_dlls  

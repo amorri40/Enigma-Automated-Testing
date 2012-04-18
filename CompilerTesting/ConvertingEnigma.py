@@ -70,6 +70,8 @@ output_string=""
 
 import subprocess,os
 
+g_dlls=""
+
 def file_len(fname):
     with open(fname) as f:
         for i, l in enumerate(f):
@@ -78,7 +80,7 @@ def file_len(fname):
 
 def run_command(command):
     # Put stderr and stdout into pipes
-    proc = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(command, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
     return_code = proc.wait()
     stdout = ""
     # Read from pipes
@@ -86,8 +88,8 @@ def run_command(command):
         stdout += line.rstrip()
     stdout += " \n"
     
-    for line in proc.stderr:
-        stdout+= line.rstrip()
+    #for line in proc.stderr:
+    #    stdout+= line.rstrip()
     return stdout
 
 
@@ -99,7 +101,7 @@ def convert(game):
     os.chdir(enigmaDir) # change to the enigma directory
 
     print "INFO: The game to give to engima: "+game
-    p = os.popen4("java -Xms600M -Xmx600M -jar plugins/LGMUtility.jar \""+game+"\"")
+    p = os.popen4("java -Djava.awt.headless=true -Xms600M -Xmx600M -jar plugins/LGMUtility.jar \""+game+"\"")
 
     # pipe the java output to str1
     str1 = p[1].read()
@@ -393,6 +395,8 @@ def extract(id,gamefile,relativelocation):
         if name.find('.zip') !=-1:
             gmfiles.append(extract(id,destinationPath+name,relativelocation))
             print gmfiles
+        if name.find('.dll') !=-1:
+            g_dlls+=name+" "
     sourceZip.close()
     return gmfiles
 

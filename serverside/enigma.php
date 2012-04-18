@@ -4,7 +4,7 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
-      // Load the Visualization API and the piechart package.
+      // Load the Visualization API
       google.load('visualization', '1.0', {'packages':['corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
@@ -33,25 +33,14 @@
         echo ",['$x' , $MacOSX , $WINDOWS , $LINUX ]";
         $i++;
         }
-
-        
          ?>
       ]);
 
-        var slider = new google.visualization.ControlWrapper({
-            'controlType': 'NumberRangeFilter',
-            'containerId': 'control1',
-            'options': {
-              'filterColumnLabel': 'x',
-              'ui': {'labelStacking': 'vertical'}
-            }
-          });
-
       // Create and draw the visualization.
       new google.visualization.LineChart(document.getElementById('visualization')).
-          draw(data, {curveType: "function",
+          draw(data, {curveType: "line",
                       width: 1000, height: 400,
-                      vAxis: {maxValue: 100}}
+                      vAxis: {maxValue: 90, minValue:0}}
               );
     }
     </script>
