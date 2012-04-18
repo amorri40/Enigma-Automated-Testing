@@ -79,17 +79,17 @@ def file_len(fname):
     return i + 1
 
 def run_command(command):
+    output_txt = open ( 'run_command_output.txt', 'w' ) 
     # Put stderr and stdout into pipes
-    proc = subprocess.Popen(command, shell=True, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(command, shell=True, stderr=subprocess.STDOUT, stdout=output_txt)
     return_code = proc.wait()
-    stdout = ""
-    # Read from pipes
-    for line in proc.stdout:
-        stdout += line.rstrip()
-    stdout += " \n"
+    output_txt.close()
+    output_txt = open ( 'run_command_output.txt')
+    stdout = output_txt.read()
     
-    #for line in proc.stderr:
-    #    stdout+= line.rstrip()
+    output_txt.close()
+    try: os.remove("run_command_output.txt")
+    except Exception, exception: print str(exception)
     return stdout
 
 

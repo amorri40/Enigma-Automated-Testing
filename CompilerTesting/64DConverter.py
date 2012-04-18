@@ -73,6 +73,7 @@ import ConvertingEnigma, EnigmaSettings
 
 g_start = time.time()
 g_compileForWindows=False
+g_only_failed_compiles=False
 
 db=EnigmaSettings.mysql_connect()
 c=db.cursor()
@@ -85,7 +86,7 @@ if len(sys.argv) < 3:  # the program name and the two arguments
 
 
 
-optlist, args = getopt.getopt(sys.argv[1:], 'w',['windows'])
+optlist, args = getopt.getopt(sys.argv[1:], 'wf',['windows','onlyfailed'])
 print optlist
 print args
 
@@ -96,11 +97,13 @@ maximum_number = int(args[1])
 for o, a in optlist:
         if o == "--windows" or o == "-w":
             g_compileForWindows = True
+        if o == "--onlyfailed" or o == "-f":
+            g_only_failed_compiles = True
 
 
 #
 def compile_mingw():
-    build_dir=EnigmaSettings.getEnigmaDir()#+"/ENIGMASystem/SHELL/"
+    build_dir=EnigmaSettings.getEnigmaDir()
     cwd = os.getcwd() # get current directory
     try:
        os.chdir(build_dir)
@@ -119,17 +122,23 @@ if g_compileForWindows==True: g_windowsTable="64D_win32__"+table_date; Convertin
 
 #start
 startingDir = os.getcwd()
-db.query("""SELECT ID, Name, SiteLink, DownloadLink FROM GameDetails WHERE ID>"""+str(minimum_example)+""" ORDER BY ID LIMIT """+str(maximum_number)) #ORDER BY ID DESC
+get_games_query="""SELECT ID, Name, SiteLink, DownloadLink FROM GameDetails WHERE ID>"""+str(minimum_example)+""" ORDER BY ID LIMIT """+str(maximum_number)
+
+if (g_only_failed_compiles):
+    get_games_query="""SELECT a.ID, a.Name, a.SiteLink, a.DownloadLink, b.Compile_Succesful
+FROM GameDetails AS a LEFT JOIN """+db_table+""" AS b ON a.ID = b.example WHERE a.ID>"""+str(minimum_example)+""" AND b.Compile_Succesful=0 ORDER BY a.ID"""
+    
+db.query(get_games_query) #ORDER BY ID DESC
 
 r=db.store_result()
 for download_rows in range(0,maximum_number):
     game_start_time = time.time()
     row=r.fetch_row()
     if len(row) <1: print "Finished Converting all examples!"; break
-    url= row[0][3]
     id= row[0][0]
     name = row[0][1]
     sitelink=row[0][2]
+    url= row[0][3]
     print "==================================="
     print "============== "+str(id)+" ("+str(download_rows)+" of "+str(maximum_number)+") ============= "
     print "==================================="
