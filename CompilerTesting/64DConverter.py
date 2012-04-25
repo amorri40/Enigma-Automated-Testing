@@ -191,7 +191,6 @@ for download_rows in range(0,maximum_number):
     multiple_files=len(gmfiles)
     if multiple_files >0:
         for gmfile in gmfiles:
-            #print "INFO: The game maker file "+gmfile
             output=ConvertingEnigma.convert(gmfile)
             ConvertingEnigma.get_specific_errors(output)
     else: print "No game maker files in this example!"; continue

@@ -375,6 +375,7 @@ def download(id, url,relativelocation):
 
 
 def extract(id,gamefile,relativelocation):
+    global g_dlls
     startingDir = os.getcwd()
     import zipfile
     fullpathToZip = gamefile
@@ -389,9 +390,11 @@ def extract(id,gamefile,relativelocation):
         return []
     gmfiles=[]
     for name in sourceZip.namelist():
-        if name.find('.exe')!= -1 or name.find('.gmk')!= -1 or name.find('.gmd')!= -1 or name.find('.gm6')!= -1:
+        if  name.find('.gmk')!= -1 or name.find('.gmd')!= -1 or name.find('.gm6')!= -1: 
             sourceZip.extract(name, destinationPath) #later check for zip files in zip files
             gmfiles.append(destinationPath+name)
+        if name.find('.exe')!= -1:
+            print "exe file!"
         if name.find('.zip') !=-1:
             gmfiles.append(extract(id,destinationPath+name,relativelocation))
             print gmfiles
